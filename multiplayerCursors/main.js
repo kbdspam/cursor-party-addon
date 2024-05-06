@@ -1,12 +1,32 @@
 Game.registerMod("multiplayerCursors", {
 	init: function() {
 		// If we don't have mod data yet (first run) then the load() function won't run.
-		// Hook the load function to simplify ourself.
-		Game.original_loadModData2 = Game.loadModData;
-		Game.loadModData = () => {
-			Game.loadModData = Game.original_loadModData2;
-			Game.original_loadModData2();
+		// Hook some function to simplify ourself.
+		if (!("loadModData_original" in Game)) {
+			Game.loadModData_post_functions = {};
+			Game.loadModData_original = Game.loadModData;
+			Game.loadModData = function() {
+				Game.loadModData_original();
+				for (let key in Game.loadModData_post_functions) {
+					Game.loadModData_post_functions[key]();
+				}
+			};
+		}
+		Game.loadModData_post_functions["multiplayerCursors"] = () => {
+			delete Game.loadModData_post_functions["multiplayerCursors"];
 			if (this && !this.active) this.load("");
+		};
+		// Deleting mod data doesn't work if the plugin is still loaded/enabled.
+		// Delete mod data -> save & quit -> mod saves data again -> oops...
+		Game.original_deleteModData2 = Game.deleteModData;
+		Game.deleteModData = (id) => {
+			Game.original_deleteModData2(id);
+			if (id == "multiplayerCursors") {}//this.initDatas(null);
+		};
+		Game.original_deleteAllModData2 = Game.deleteAllModData;
+		Game.deleteAllModData = () => {
+			Game.original_deleteAllModData2();
+			//this.initDatas(null);
 		};
 
 		l('versionNumber').insertAdjacentHTML('beforeend','<a style="font-size:10px;margin-left:10px;" class="smallFancyButton" id="multiplayerCursorsButton">Multiplayer Cursors<br>OFF</a>');
@@ -29,6 +49,7 @@ Game.registerMod("multiplayerCursors", {
 		document.multiplayerCursorsCC = "cc";
 		let script = document.createElement("script");
 		script.src = "http://localhost:1999/cursors.js";
+		// TODO: add a keep-alive message for the websockets so they stop randomly dying? Is this really happening?
 		//script.src = "https://cursor-party.xxxxxxxx.partykit.dev/cursors.js";
 		//script.src = `https://cursor-party-${subdomain}.c.ookie.click/cursors.js`;
 		// http://localhost:1999/Untitled-1.html
