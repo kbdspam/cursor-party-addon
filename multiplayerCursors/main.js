@@ -49,7 +49,6 @@ Game.registerMod("multiplayerCursors", {
 		document.multiplayerCursorsCC = "cc";
 		let script = document.createElement("script");
 		script.src = "http://localhost:1999/cursors.js";
-		// TODO: add a keep-alive message for the websockets so they stop randomly dying? Is this really happening?
 		//script.src = "https://cursor-party.xxxxxxxx.partykit.dev/cursors.js";
 		//script.src = `https://cursor-party-${subdomain}.c.ookie.click/cursors.js`;
 		// http://localhost:1999/Untitled-1.html
