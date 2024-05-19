@@ -91,8 +91,8 @@ Game.registerMod("multiplayerCursors", {
 		if (!this.active) return;
 		if (!document.multiplayerCursorsCount) return;
 		l("multiplayerCursorsButton").innerHTML =
-			`Multiplayer Cursors<br>${document.multiplayerCursorsCount} cursors`;
-	}
+			`Multiplayer Cursors<br>Connected: ${document.multiplayerCursorsCount+1}`;
+	},
 	save:function() {
 		return this.active ? "1" : "0";
 	},
