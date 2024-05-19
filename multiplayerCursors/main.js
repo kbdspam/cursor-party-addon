@@ -56,6 +56,7 @@ Game.registerMod("multiplayerCursors", {
 		document.body.appendChild(script);
 
 		script.onload = () => {
+			setInterval(() => this.updateDisplay(), 2500);
 			this.blockToggle = false;
 			l("multiplayerCursorsButton").innerHTML = "Multiplayer Cursors<br>ON";
 		};
@@ -76,6 +77,7 @@ Game.registerMod("multiplayerCursors", {
 			l("multiplayerCursorsButton").innerHTML = "Multiplayer Cursors<br>loading...";
 			this.injectScript(0);
 		}
+		document.multiplayerCursorsCount = 0;
 		this.active = true;
 	},
 	stopTheCursors: function() {
@@ -85,6 +87,12 @@ Game.registerMod("multiplayerCursors", {
 		l("multiplayerCursorsButton").innerHTML = "Multiplayer Cursors<br>OFF";
 		this.active = false;
 	},
+	updateDisplay: function() {
+		if (!this.active) return;
+		if (!document.multiplayerCursorsCount) return;
+		l("multiplayerCursorsButton").innerHTML =
+			`Multiplayer Cursors<br>${document.multiplayerCursorsCount} cursors`;
+	}
 	save:function() {
 		return this.active ? "1" : "0";
 	},
