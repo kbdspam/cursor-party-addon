@@ -1,4 +1,4 @@
-Game.registerMod("multiplayerCursors", {
+Game.registerMod("cursorParty", {
 	init: function() {
 		// If we don't have mod data yet (first run) then the load() function won't run.
 		// Hook some function to simplify ourself.
@@ -12,8 +12,8 @@ Game.registerMod("multiplayerCursors", {
 				}
 			};
 		}
-		Game.loadModData_post_functions["multiplayerCursors"] = () => {
-			delete Game.loadModData_post_functions["multiplayerCursors"];
+		Game.loadModData_post_functions["cursorParty"] = () => {
+			delete Game.loadModData_post_functions["cursorParty"];
 			if (this && !this.active) this.load("");
 		};
 		// Deleting mod data doesn't work if the plugin is still loaded/enabled.
@@ -21,7 +21,7 @@ Game.registerMod("multiplayerCursors", {
 		Game.original_deleteModData2 = Game.deleteModData;
 		Game.deleteModData = (id) => {
 			Game.original_deleteModData2(id);
-			if (id == "multiplayerCursors") {}//this.initDatas(null);
+			if (id == "cursorParty") {}//this.initDatas(null);
 		};
 		Game.original_deleteAllModData2 = Game.deleteAllModData;
 		Game.deleteAllModData = () => {
@@ -29,8 +29,8 @@ Game.registerMod("multiplayerCursors", {
 			//this.initDatas(null);
 		};
 
-		l('versionNumber').insertAdjacentHTML('beforeend','<a style="font-size:10px;margin-left:10px;" class="smallFancyButton" id="multiplayerCursorsButton">Multiplayer Cursors<br>OFF</a>');
-		AddEvent(l('multiplayerCursorsButton'),'click',()=>{
+		l('versionNumber').insertAdjacentHTML('beforeend','<a style="font-size:10px;margin-left:10px;" class="smallFancyButton" id="cursorPartyButton">Cursor Party<br>OFF</a>');
+		AddEvent(l('cursorPartyButton'),'click',()=>{
 			if (this.blockToggle) {
 				PlaySound('snd/clickOff2.mp3');
 				return;
@@ -46,7 +46,7 @@ Game.registerMod("multiplayerCursors", {
 		});
 	},
 	injectScript: function(subdomain) {
-		document.multiplayerCursorsCC = "cc";
+		document.cursorPartyCC = "cc";
 		let script = document.createElement("script");
 		script.src = "http://localhost:1999/cursors.js";
 		//script.src = "https://cursor-party.xxxxxxxx.partykit.dev/cursors.js";
@@ -58,7 +58,7 @@ Game.registerMod("multiplayerCursors", {
 		script.onload = () => {
 			setInterval(() => this.updateDisplay(), 2500);
 			this.blockToggle = false;
-			l("multiplayerCursorsButton").innerHTML = "Multiplayer Cursors<br>ON";
+			l("cursorPartyButton").innerHTML = "Cursor Party<br>ON";
 		};
 		script.onerror = () => {
 			console.log(`failed to load cursors.js from ${subdomain}...`);
@@ -68,30 +68,30 @@ Game.registerMod("multiplayerCursors", {
 		};
 	},
 	startTheCursors: function() {
-		if ("multiplayerCursorsWs" in document) {
-			// The cursors.js script sets `document.multiplayerCursorsWs` to the socket...
-			document.multiplayerCursorsWs.reconnect();
-			l("multiplayerCursorsButton").innerHTML = "Multiplayer Cursors<br>ON";
+		if ("cursorPartyWs" in document) {
+			// The cursors.js script sets `document.cursorPartyWs` to the socket...
+			document.cursorPartyWs.reconnect();
+			l("cursorPartyButton").innerHTML = "Cursor Party<br>ON";
 		} else {
 			this.blockToggle = true;
-			l("multiplayerCursorsButton").innerHTML = "Multiplayer Cursors<br>loading...";
+			l("cursorPartyButton").innerHTML = "Cursor Party<br>loading...";
 			this.injectScript(0);
 		}
-		document.multiplayerCursorsCount = 0;
+		document.cursorPartyCount = 0;
 		this.active = true;
 	},
 	stopTheCursors: function() {
-		if ("multiplayerCursorsWs" in document) {
-			document.multiplayerCursorsWs.close();
+		if ("cursorPartyWs" in document) {
+			document.cursorPartyWs.close();
 		}
-		l("multiplayerCursorsButton").innerHTML = "Multiplayer Cursors<br>OFF";
+		l("cursorPartyButton").innerHTML = "Cursor Party<br>OFF";
 		this.active = false;
 	},
 	updateDisplay: function() {
 		if (!this.active) return;
-		if (!document.multiplayerCursorsCount) return;
-		l("multiplayerCursorsButton").innerHTML =
-			`Multiplayer Cursors<br>Connected: ${document.multiplayerCursorsCount+1}`;
+		if (!document.cursorPartyCount) return;
+		l("cursorPartyButton").innerHTML =
+			`Cursor Party<br>Connected: ${document.cursorPartyCount+1}`;
 	},
 	save:function() {
 		return this.active ? "1" : "0";
