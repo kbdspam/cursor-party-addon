@@ -48,11 +48,8 @@ Game.registerMod("cursorParty", {
 	injectScript: function(subdomain) {
 		document.cursorPartyCC = "cc";
 		let script = document.createElement("script");
-		script.src = "http://localhost:1999/cursors.js";
-		//script.src = "https://cursor-party.xxxxxxxx.partykit.dev/cursors.js";
-		//script.src = `https://cursor-party-${subdomain}.c.ookie.click/cursors.js`;
-		// http://localhost:1999/Untitled-1.html
-		// http://localhost:1999/
+		//script.src = "http://localhost:1999/cursors.js";
+		script.src = `https://cursor-party-${subdomain}.c.ookie.click/cursors.js`;
 		document.body.appendChild(script);
 
 		script.onload = () => {
@@ -64,6 +61,10 @@ Game.registerMod("cursorParty", {
 			console.log(`failed to load cursors.js from ${subdomain}...`);
 			if (subdomain < 5) {
 				this.injectScript(subdomain + 1);
+			} else {
+				setTimeout(() => {
+					this.injectScript(0);
+				}, 3 * 60 * 1000);
 			}
 		};
 	},
