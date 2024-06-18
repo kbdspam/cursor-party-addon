@@ -1,3 +1,5 @@
+
+console.log("cursorParty: attempting standalone version");
 Game.registerMod("cursorParty", {
 	init: function() {
 		// If we don't have mod data yet (first run) then the load() function won't run.
