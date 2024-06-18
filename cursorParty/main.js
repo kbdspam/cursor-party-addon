@@ -14,8 +14,9 @@ Game.registerMod("cursorParty", {
 		}
 		Game.loadModData_post_functions["cursorParty"] = () => {
 			delete Game.loadModData_post_functions["cursorParty"];
-			if (this && !this.active) this.load("");
+			if (!this.load_called) this.load("on");
 		};
+		/*
 		// Deleting mod data doesn't work if the plugin is still loaded/enabled.
 		// Delete mod data -> save & quit -> mod saves data again -> oops...
 		Game.original_deleteModData2 = Game.deleteModData;
@@ -28,6 +29,7 @@ Game.registerMod("cursorParty", {
 			Game.original_deleteAllModData2();
 			//this.initDatas(null);
 		};
+		*/
 
 		l('versionNumber').insertAdjacentHTML('beforeend','<a style="font-size:10px;margin-left:10px;" class="smallFancyButton" id="cursorPartyButton">Cursor Party<br>OFF</a>');
 		AddEvent(l('cursorPartyButton'),'click',()=>{
@@ -95,10 +97,11 @@ Game.registerMod("cursorParty", {
 			`Cursor Party<br>Connected: ${document.cursorPartyCount+1}`;
 	},
 	save:function() {
-		return this.active ? "1" : "0";
+		return this.active ? "on" : "off";
 	},
 	load:function(str) {
+		this.load_called = true;
 		if (this.active) return;
-		if (+str) this.startTheCursors();
+		if (str != "off") this.startTheCursors();
 	},
 });
