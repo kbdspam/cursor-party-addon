@@ -1,5 +1,4 @@
 
-console.log("cursorParty: attempting standalone version");
 Game.registerMod("cursorParty", {
 	init: function() {
 		// If we don't have mod data yet (first run) then the load() function won't run.
@@ -53,7 +52,7 @@ Game.registerMod("cursorParty", {
 		document.cursorPartyCC = "cc";
 		let script = document.createElement("script");
 		//script.src = "http://localhost:1999/cursors.js";
-		script.src = `https://cursor-party-${subdomain}.c.ookie.click/cursors.js`;
+		script.src = `https://cursor-party-${subdomain}.c.ookie.click/cursors2.js`;
 		document.body.appendChild(script);
 
 		script.onload = () => {
@@ -63,7 +62,7 @@ Game.registerMod("cursorParty", {
 		};
 		script.onerror = () => {
 			console.log(`failed to load cursors.js from ${subdomain}...`);
-			if (subdomain < 5) {
+			if (subdomain < 3) {
 				this.injectScript(subdomain + 1);
 			} else {
 				setTimeout(() => {
