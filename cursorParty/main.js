@@ -1,6 +1,9 @@
 
 Game.registerMod("cursorParty", {
 	init: function() {
+		if (!(this.goodInit = ["3268177089", "3061304069"].includes(App.mods['cursorParty'].workshop)))
+			return;
+
 		// If we don't have mod data yet (first run) then the load() function won't run.
 		// Hook some function to simplify ourself.
 		if (!("loadModData_original" in Game)) {
@@ -102,6 +105,7 @@ Game.registerMod("cursorParty", {
 		return this.active ? "on" : "off";
 	},
 	load:function(str) {
+		if (!this.goodInit) return;
 		this.load_called = true;
 		if (this.active) return;
 		if (str != "off") this.startTheCursors();
